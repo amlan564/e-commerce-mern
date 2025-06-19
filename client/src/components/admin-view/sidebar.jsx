@@ -61,7 +61,7 @@ const AdminSideBar = ({ open, setOpen }) => {
             <SheetHeader>
               <SheetTitle className="flex items-center gap-2 mt-5">
                 <ChartNoAxesCombined size={30} />
-                <h1 className="text-xl font-extrabold">Admin Panel</h1>
+                <span className="text-xl font-extrabold">Admin Panel</span>
               </SheetTitle>
             </SheetHeader>
             <MenuItems setOpen={setOpen} />

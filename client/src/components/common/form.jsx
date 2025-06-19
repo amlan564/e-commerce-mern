@@ -16,6 +16,7 @@ const CommonForm = ({
   setFormData,
   onSubmit,
   buttonText,
+  isBtnDisabled,
 }) => {
   const renderInputsByComponentType = (getControlItem) => {
     let element = null;
@@ -79,9 +80,9 @@ const CommonForm = ({
       case types.TEXTAREA:
         element = (
           <Textarea
-          name={getControlItem.name}
-          placeholder={getControlItem.placeholder}
-          id={getControlItem.name}
+            name={getControlItem.name}
+            placeholder={getControlItem.placeholder}
+            id={getControlItem.name}
             value={value}
             onChange={(e) =>
               setFormData({
@@ -128,6 +129,7 @@ const CommonForm = ({
         ))}
       </div>
       <Button
+        disabled={isBtnDisabled}
         type="submit"
         className="mt-6 w-full bg-black text-white cursor-pointer"
       >
