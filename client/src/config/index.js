@@ -88,3 +88,31 @@ export const addProductFormElements = [
     placeholder: "Enter total stock",
   },
 ];
+
+export const shoppingViewHeaderMenuItems = [
+  {
+    id: "home",
+    label: "Home",
+    path: "/shop/home"
+  },
+  {
+    id: "laptop",
+    label: "Laptop",
+    path: "/shop/listing"
+  },
+  {
+    id: "phone",
+    label: "Phone",
+    path: "/shop/listing"
+  },
+  {
+    id: "camera",
+    label: "Camera",
+    path: "/shop/listing"
+  },
+  {
+    id: "headphone",
+    label: "Headphone",
+    path: "/shop/listing"
+  },
+]
