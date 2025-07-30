@@ -93,26 +93,54 @@ export const shoppingViewHeaderMenuItems = [
   {
     id: "home",
     label: "Home",
-    path: "/shop/home"
+    path: "/shop/home",
   },
   {
     id: "laptop",
     label: "Laptop",
-    path: "/shop/listing"
+    path: "/shop/listing",
   },
   {
     id: "phone",
     label: "Phone",
-    path: "/shop/listing"
+    path: "/shop/listing",
   },
   {
     id: "camera",
     label: "Camera",
-    path: "/shop/listing"
+    path: "/shop/listing",
   },
   {
     id: "headphone",
     label: "Headphone",
-    path: "/shop/listing"
+    path: "/shop/listing",
   },
-]
+];
+
+export const filterOptions = {
+  category: [
+    {
+      id: "laptop",
+      label: "Laptop",
+    },
+    {
+      id: "phone",
+      label: "Phone",
+    },
+    {
+      id: "camera",
+      label: "Camera",
+    },
+    {
+      id: "headphone",
+      label: "Headphone",
+    },
+  ],
+};
+
+export const sortOptions = [
+  { id: "price-lowtohigh", label: "Price: Low to High" },
+  { id: "price-hightolow", label: "Price: High to Low" },
+  { id: "title-atoz", label: "Title: A to Z" },
+  { id: "title-ztoa", label: "Title: Z to A" },
+];

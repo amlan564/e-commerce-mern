@@ -4,7 +4,7 @@ import { loginUser } from "@/store/auth-slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 
 const initialState = {
   email: "",
