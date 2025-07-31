@@ -8,6 +8,7 @@ import { Input } from "../ui/input";
 import toast from "react-hot-toast";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { useDispatch, useSelector } from "react-redux";
+import { setProductDetails } from "@/store/shop/products-slice";
 
 const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
   const dispatch = useDispatch();
@@ -28,9 +29,14 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
     });
   };
 
+  const handleDialogClose = () => {
+    setOpen(false);
+    dispatch(setProductDetails());
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="grid grid-cols-2 gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw] bg-white border-none">
+    <Dialog open={open} onOpenChange={handleDialogClose}>
+      <DialogContent className="grid max-md:grid-cols-1 max-md:max-h-[600px] grid-cols-2 gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw] bg-white border-none">
         <div className="relative overflow-hidden rounded-lg">
           <img
             src={productDetails?.image}
@@ -80,7 +86,7 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
             </Button>
           </div>
           <Separator />
-          <div className="max-h-[300px] overflow-auto">
+          <div className="max-h-[200px] overflow-auto">
             <h2 className="text-lg font-bold mb-4">Reviews</h2>
             <div className="grid gap-6">
               <div className="flex gap-4">
