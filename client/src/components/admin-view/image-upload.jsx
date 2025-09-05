@@ -14,6 +14,7 @@ const ProductImageUpload = ({
   setUploadedImageUrl,
   setImageLoadingState,
   isEditMode,
+  isCustomStyling = false,
 }) => {
   const inputRef = useRef(null);
 
@@ -63,7 +64,7 @@ const ProductImageUpload = ({
   }, [imageFile]);
 
   return (
-    <div className="w-full mx-auto">
+    <div className={`w-full ${isCustomStyling ? "" : "max-w-md mx-auto"}`}>
       <Label className="text-lg font-semibold mb-2 block">Upload Image</Label>
       <div
         onDragOver={handleDragOver}
