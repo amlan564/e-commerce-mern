@@ -29,10 +29,8 @@ const AuthRegister = () => {
     });
   };
 
-  console.log(formData);
-
   return (
-    <div className="mx-auto w-full max-w-md space-y-6 text-center">
+    <div className="mx-auto w-full max-w-lg space-y-8 px-14 py-10 text-center bg-primary-foreground shadow-sm rounded-lg">
       <h1 className="text-3xl font-bold tracking-tight text-foreground">
         Create an account
       </h1>
@@ -43,7 +41,7 @@ const AuthRegister = () => {
         setFormData={setFormData}
         onSubmit={onSubmit}
       />
-      <p className="mt-2">
+      <p>
         Already have an account?
         <Link
           to="/auth/login"

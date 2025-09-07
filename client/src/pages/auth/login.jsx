@@ -28,7 +28,7 @@ const AuthLogin = () => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-8 text-center">
+    <div className="mx-auto w-full max-w-lg space-y-8 px-14 py-10 text-center bg-primary-foreground shadow-sm rounded-lg">
       <h1 className="text-3xl font-bold tracking-tight text-foreground">
         Sign in to your account
       </h1>
@@ -39,7 +39,7 @@ const AuthLogin = () => {
         setFormData={setFormData}
         onSubmit={onSubmit}
       />
-      <p className="mt-2">
+      <p>
         Don't have an account?
         <Link
           to="/auth/register"
