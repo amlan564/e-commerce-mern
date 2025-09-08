@@ -48,7 +48,6 @@ const shoppingProductSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchAllFilteredProducts.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.isLoading = false;
         state.productList = action.payload.data;
       })
@@ -60,7 +59,6 @@ const shoppingProductSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchProductDetails.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.isLoading = false;
         state.productDetails = action.payload.data;
       })

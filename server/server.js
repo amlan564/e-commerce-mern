@@ -1,6 +1,6 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const authRouter = require("./routes/auth/auth-routes");
@@ -15,11 +15,8 @@ const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
 
-dotenv.config();
-
 // creating database connection
-const dburl =
-  process.env.MONGODB_URL;
+const dburl = process.env.MONGODB_URL;
 
 mongoose
   .connect(dburl)
