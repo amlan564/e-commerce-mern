@@ -41,7 +41,31 @@ const PORT = process.env.PORT || 5000;
 //   })
 // );
 
-app.use(cors());
+const allowedOrigins = [
+  "https://ultra-gadgets.vercel.app",
+  "http://localhost:5173",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, origin || "https://ultra-gadgets.vercel.app"); // Return specific origin, not '*'
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Expires",
+      "Pragma",
+    ],
+    credentials: true, // Required for cookies/auth headers
+  })
+);
 
 app.use(cookieParser());
 app.use(express.json());
