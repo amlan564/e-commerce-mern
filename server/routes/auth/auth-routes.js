@@ -4,21 +4,24 @@ const {
   loginUser,
   logoutUser,
   authMiddleware,
+  updateProfile,
+  updatePassword,
+  checkAuth,
+  handleProfileImageUpload,
 } = require("../../controllers/auth/auth-controller");
-
+const { upload } = require("../../helpers/cloudinary");
 const router = express.Router();
 
+router.post(
+  "/upload-image",
+  upload.single("my_file"),
+  handleProfileImageUpload
+);
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
-router.get("/check-auth", authMiddleware, (req, res) => {
-  const user = req.user;
-
-  res.status(200).json({
-    success: true,
-    message: "Authenticated user",
-    user,
-  });
-});
+router.put("/update-profile", authMiddleware, updateProfile);
+router.put("/update-password", authMiddleware, updatePassword);
+router.get("/check-auth", authMiddleware, checkAuth);
 
 module.exports = router;

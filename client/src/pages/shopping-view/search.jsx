@@ -23,7 +23,7 @@ const SearchProducts = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (keyword && keyword.trim() !== "" && keyword.trim().length > 2) {
+    if (keyword && keyword.trim() !== "" && keyword.trim().length > 1) {
       setTimeout(() => {
         setSearchParams(new URLSearchParams(`?keyword=${keyword}`));
         dispatch(getSearchResults(keyword));
@@ -81,7 +81,7 @@ const SearchProducts = () => {
   }, [productDetails]);
 
   return (
-    <div className="container mx-auto md:px-6 px-4 py-8">
+    <div className="px-6 xl:px-30 py-8">
       <div className="flex justify-center mb-8">
         <div className="w-full flex items-center">
           <Input
@@ -95,7 +95,7 @@ const SearchProducts = () => {
       {!searchResults.length ? (
         <h1 className="text-xl font-bold">No result found</h1>
       ) : null}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {searchResults.map((item) => (
           <ShoppingProductTile
             product={item}

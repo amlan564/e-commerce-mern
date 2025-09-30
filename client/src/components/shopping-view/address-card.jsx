@@ -22,17 +22,16 @@ const AddressCard = ({
         } shadow-sm cursor-pointer`}
     >
       <CardContent
-        className="grid px-4 gap-4"
+        className="grid px-6 gap-4"
       >
-        <Label>Address: {addressInfo?.address}</Label>
-        <Label>City: {addressInfo?.city}</Label>
-        <Label>Pincode: {addressInfo?.pincode}</Label>
-        <Label>Phone: {addressInfo?.phone}</Label>
-        <Label>Notes: {addressInfo?.notes}</Label>
+        <p className="text-sm"><span className="font-medium">Address:</span> {addressInfo?.address}</p>
+        <p className="text-sm"><span className="font-medium">City:</span> {addressInfo?.city}</p>
+        <p className="text-sm"><span className="font-medium">Pincode:</span> {addressInfo?.pincode}</p>
+        <p className="text-sm"><span className="font-medium">Phone:</span> {addressInfo?.phone}</p>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button onClick={() => handleUpdateAddress(addressInfo)}>Edit</Button>
-        <Button onClick={() => handleDeleteAddress(addressInfo)}>Delete</Button>
+      <CardFooter className="grid grid-cols-2 gap-30 sm:gap-10 md:gap-6 lg:gap-10">
+        <Button className="bg-green-500 hover:bg-green-600 transition-all" onClick={() => handleUpdateAddress(addressInfo)}>Edit</Button>
+        <Button className="bg-red-500 hover:bg-red-600 transition-all" onClick={() => handleDeleteAddress(addressInfo)}>Delete</Button>
       </CardFooter>
     </Card>
   );

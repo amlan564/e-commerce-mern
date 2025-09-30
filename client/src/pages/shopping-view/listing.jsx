@@ -12,7 +12,7 @@ import {
   fetchAllFilteredProducts,
   fetchProductDetails,
 } from "@/store/shop/products-slice";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Funnel } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ShoppingProductTile from "./product-tile";
@@ -20,6 +20,8 @@ import { useSearchParams } from "react-router-dom";
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { toast } from "react-hot-toast";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
+import ProductFilterDrawer from "@/components/shopping-view/filter-drawer";
 
 const createSearchParamsHelper = (filterParams) => {
   const queryParams = [];
@@ -44,6 +46,8 @@ const ShoppingListing = () => {
   const { user } = useSelector((state) => state.auth);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const [searchParams, setSearchParams] = useSearchParams();
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
 
@@ -55,22 +59,34 @@ const ShoppingListing = () => {
 
   const handleFilter = (getSectionId, getCurrentOption) => {
     let copyFilters = { ...filters };
-    const indexOfCurrentSection =
-      Object.keys(copyFilters).indexOf(getSectionId);
 
-    if (indexOfCurrentSection === -1) {
+    if (getSectionId === "reset") {
+      // Reset all filters
+      copyFilters = {};
+    } else if (getSectionId === "price") {
+      // For price, directly set the array [minPrice, maxPrice]
       copyFilters = {
         ...copyFilters,
-        [getSectionId]: [getCurrentOption],
+        [getSectionId]: getCurrentOption,
       };
     } else {
-      const indexofCurrentOption =
-        copyFilters[getSectionId].indexOf(getCurrentOption);
+      const indexOfCurrentSection =
+        Object.keys(copyFilters).indexOf(getSectionId);
 
-      if (indexofCurrentOption === -1) {
-        copyFilters[getSectionId].push(getCurrentOption);
+      if (indexOfCurrentSection === -1) {
+        copyFilters = {
+          ...copyFilters,
+          [getSectionId]: [getCurrentOption],
+        };
       } else {
-        copyFilters[getSectionId].splice(indexofCurrentOption, 1);
+        const indexofCurrentOption =
+          copyFilters[getSectionId].indexOf(getCurrentOption);
+
+        if (indexofCurrentOption === -1) {
+          copyFilters[getSectionId].push(getCurrentOption);
+        } else {
+          copyFilters[getSectionId].splice(indexofCurrentOption, 1);
+        }
       }
     }
 
@@ -133,22 +149,36 @@ const ShoppingListing = () => {
   }, [filters]);
 
   useEffect(() => {
-    if (filters !== null && sort !== null)
+    if (filters !== null && sort !== null) {
+      // setLoading(true);
       dispatch(
         fetchAllFilteredProducts({ filterParams: filters, sortParams: sort })
-      );
+      ).then(() => {
+        setLoading(false);
+      });
+    }
   }, [dispatch, sort, filters]);
 
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[80vh]">
+        <div className="w-20 h-20 border-4 border-gray-200 border-t-black rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[1fr_2.5fr] lg:grid-cols-[1fr_3fr] xl:grid-cols-[1fr_4.5fr] gap-6 p-4 md:p-6">
+    <div className="px-6 xl:px-30 py-6">
+      {/* filter section */}
       <ProductFilter filters={filters} handleFilter={handleFilter} />
-      <div className="w-full rounded-lg shadow-sm">
-        <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-          <h2 className="text-lg font-extrabold">All Products</h2>
+      {/* all products section */}
+      <div className="w-full lg:pl-[270px] mt-2">
+        <div className="p-3 flex items-center justify-between bg-white shadow-sm rounded-lg border border-gray-200">
+          <h2 className="text-lg font-bold ml-2">All Products</h2>
           <div className="flex items-center gap-6">
             <span className="text-gray-600">
               {productList?.length === 0
@@ -184,9 +214,24 @@ const ShoppingListing = () => {
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenu>
+            <Drawer>
+              <DrawerTrigger className="lg:hidden" asChild>
+                <Button variant="outline" size="sm">
+                  <Funnel className="w-4 h-4" />
+                  <span>Filters</span>
+                </Button>
+              </DrawerTrigger>
+              <DrawerContent>
+                <ProductFilterDrawer
+                  filters={filters}
+                  handleFilter={handleFilter}
+                />
+              </DrawerContent>
+            </Drawer>
           </div>
         </div>
-        <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 p-4">
+        {/* All products list */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 pt-4">
           {productList && productList.length > 0
             ? productList.map((productItem, index) => (
                 <ShoppingProductTile

@@ -25,6 +25,8 @@ export const getFeatureImages = createAsyncThunk(
       `${import.meta.env.VITE_API_URL}/api/common/feature/get`
     );
 
+    console.log(response.data, "response.data");
+
     return response.data;
   }
 );

@@ -3,10 +3,10 @@ import {
   CameraIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  Headset,
-  MicVocal,
+  Headphones,
+  Laptop,
+  Monitor,
   PhoneIcon,
-  ShirtIcon,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
@@ -23,19 +23,21 @@ import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { getFeatureImages } from "@/store/common-slice";
 
 const categoriesWithIcon = [
-  { id: "laptop", label: "Laptop", icon: ShirtIcon },
+  { id: "laptop", label: "Laptop", icon: Laptop },
+  { id: "monitor", label: "Monitor", icon: Monitor },
   { id: "phone", label: "Phone", icon: PhoneIcon },
   { id: "camera", label: "Camera", icon: CameraIcon },
-  { id: "sound system", label: "Sound System", icon: MicVocal },
-  { id: "accessories", label: "Accessories", icon: Headset },
+  { id: "headphone", label: "Headphone", icon: Headphones },
 ];
 
 const ShoppingHome = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
+  const { cartItems } = useSelector((state) => state.shopCart);
   const { featureImageList } = useSelector((state) => state.commonFeature);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -58,8 +60,26 @@ const ShoppingHome = () => {
     dispatch(fetchProductDetails(getCurrentProductId));
   };
 
-  const handleAddToCart = (getCurrentProductId) => {
-    console.log(getCurrentProductId);
+  const handleAddToCart = (getCurrentProductId, getTotalStock) => {
+    let getCartItems = cartItems.items || [];
+
+    if (getCartItems.length) {
+      const indexOfCurrentItem = getCartItems.findIndex(
+        (item) => item.productId === getCurrentProductId
+      );
+
+      if (indexOfCurrentItem > -1) {
+        const getQuantity = getCartItems[indexOfCurrentItem].quantity;
+
+        if (getQuantity + 1 > getTotalStock) {
+          toast.error(
+            `Only ${getQuantity} quantity can be added for this product`
+          );
+          return;
+        }
+      }
+    }
+
     dispatch(
       addToCart({
         userId: user?.id,
@@ -101,7 +121,8 @@ const ShoppingHome = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="relative w-full h-[600px] overflow-hidden">
+      {/* feature image section */}
+      <div className="relative w-full h-[50vh] sm:h-[60vh] md:h-[75vh] lg:h-[70vh] xl:h-[85vh] overflow-hidden border-4">
         {featureImageList && featureImageList.length > 0
           ? featureImageList.map((slide, index) => (
               <img
@@ -140,18 +161,20 @@ const ShoppingHome = () => {
           <ChevronRightIcon className="w-4 h-4" />
         </Button>
       </div>
+      {/* shop by category section */}
       <section className="py-12 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="px-6 xl:px-30">
           <h2 className="text-2xl font-bold text-center mb-8">
-            Shop by category
+            Shop By Category
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
             {categoriesWithIcon.map((categoryItem) => (
               <Card
+                key={categoryItem.id}
                 onClick={() =>
                   handleNavigateToListingPage(categoryItem, "category")
                 }
-                className="cursor-pointer hover:shadow-lg transition-shadow"
+                className="cursor-pointer border-none hover:shadow-lg transition-shadow"
               >
                 <CardContent className="flex flex-col items-center justify-center p-6">
                   <categoryItem.icon className="w-12 h-12 mb-4 text-primary" />
@@ -162,16 +185,17 @@ const ShoppingHome = () => {
           </div>
         </div>
       </section>
-
+      {/* feature products section */}
       <section className="py-12">
-        <div className="container mx-auto px-4">
+        <div className="px-6 xl:px-30">
           <h2 className="text-2xl font-bold text-center mb-8">
             Feature Products
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {productList && productList.length > 0
-              ? productList.map((productItem) => (
+              ? productList.map((productItem, index) => (
                   <ShoppingProductTile
+                    key={index}
                     product={productItem}
                     handleGetProductDetails={handleGetProductDetails}
                     handleAddToCart={handleAddToCart}

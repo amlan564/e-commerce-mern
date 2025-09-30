@@ -3,6 +3,7 @@ import {
   BadgeCheck,
   LayoutDashboard,
   ListTodo,
+  Image,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
@@ -13,6 +14,12 @@ const adminSideBarMenuItems = [
     label: "Dashboard",
     path: "/admin/dashboard",
     icon: <LayoutDashboard />,
+  },
+  {
+    id: "feature-image",
+    label: "Feature Image",
+    path: "/admin/feature-image",
+    icon: <Image />,
   },
   {
     id: "products",
@@ -54,7 +61,7 @@ const AdminSideBar = ({ open, setOpen }) => {
   const navigate = useNavigate();
 
   return (
-    <>
+    <div className="lg:fixed bg-white h-screen z-50 border-r border-gray-200">
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="left" className="w-64 bg-white">
           <div className="flex flex-col h-full">
@@ -68,7 +75,7 @@ const AdminSideBar = ({ open, setOpen }) => {
           </div>
         </SheetContent>
       </Sheet>
-      <aside className="hidden w-64 flex-col border-r border-gray-200 p-6 lg:flex">
+      <aside className="hidden w-64 flex-col px-8 py-6 lg:flex">
         <div
           onClick={() => navigate("/admin/dashboard")}
           className="flex items-center justify-center gap-2 cursor-pointer"
@@ -78,7 +85,7 @@ const AdminSideBar = ({ open, setOpen }) => {
         </div>
         <MenuItems />
       </aside>
-    </>
+    </div>
   );
 };
 

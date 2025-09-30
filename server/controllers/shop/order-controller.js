@@ -1,4 +1,4 @@
-const paypal = require("../../helpers/paypal");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const Order = require("../../models/Order");
 const Cart = require("../../models/Cart");
 const Product = require("../../models/Product");
@@ -11,94 +11,56 @@ const createOrder = async (req, res) => {
       cartItems,
       addressInfo,
       orderStatus,
-      paymentMethod,
       paymentStatus,
       totalAmount,
       orderDate,
       orderUpdateDate,
-      paymentId,
-      payerId,
     } = req.body;
 
-    console.log(req.body);
-
-    const create_payment_json = {
-      intent: "sale",
-      payer: {
-        payment_method: "paypal",
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round((totalAmount * 100) / 120),
+      currency: "usd",
+      payment_method_types: ["card"],
+      description: "Order payment",
+      metadata: {
+        userId,
+        cartId,
       },
-      redirect_urls: {
-        return_url: `${process.env.CLIENT_BASE_URL}/shop/paypal-return`,
-        cancel_url: `${process.env.CLIENT_BASE_URL}/shop/paypal-cancel`,
-      },
-      transactions: [
-        {
-          item_list: {
-            items: cartItems.map((item) => ({
-              name: item.title,
-              sku: item.productId,
-              price: item.price.toFixed(2),
-              currency: "USD",
-              quantity: item.quantity,
-            })),
-          },
-          amount: {
-            currency: "USD",
-            total: totalAmount.toFixed(2),
-          },
-          description: "description",
-        },
-      ],
-    };
+    });
 
-    paypal.payment.create(create_payment_json, async (error, paymentInfo) => {
-      if (error) {
-        console.log(error);
-        return res.status(500).json({
-          success: false,
-          message: "Error while creating paypal payment",
-        });
-      } else {
-        const newlyCreatedOrder = new Order({
-          userId,
-          cartId,
-          cartItems,
-          addressInfo,
-          orderStatus,
-          paymentMethod,
-          paymentStatus,
-          totalAmount,
-          orderDate,
-          orderUpdateDate,
-          paymentId,
-          payerId,
-        });
+    const newlyCreatedOrder = new Order({
+      userId,
+      cartId,
+      cartItems,
+      addressInfo,
+      orderStatus,
+      paymentMethod: "Stripe",
+      paymentStatus,
+      totalAmount,
+      orderDate,
+      orderUpdateDate,
+      paymentId: paymentIntent.id,
+    });
 
-        await newlyCreatedOrder.save();
+    await newlyCreatedOrder.save();
 
-        const approvalURL = paymentInfo.links.find(
-          (link) => link.rel === "approval_url"
-        ).href;
-
-        res.status(200).json({
-          success: true,
-          approvalURL,
-          orderId: newlyCreatedOrder._id,
-        });
-      }
+    res.status(200).json({
+      success: true,
+      clientSecret: paymentIntent.client_secret,
+      orderId: newlyCreatedOrder._id,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Some error occured",
+      message: "Error while creating stripe payment",
     });
   }
 };
 
 const capturePayment = async (req, res) => {
   try {
-    const { paymentId, payerId, orderId } = req.body;
+    const { paymentId, orderId } = req.body;
 
     let order = await Order.findById(orderId);
 
@@ -109,10 +71,19 @@ const capturePayment = async (req, res) => {
       });
     }
 
-    order.paymentStatus = "paid";
-    order.orderStatus = "confirmed";
+    // Retrieve the payment intent to confirm its status
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentId);
+
+    if (paymentIntent.status !== "succeeded") {
+      return res.status(400).json({
+        success: false,
+        message: "Payment not successful",
+      });
+    }
+
+    order.paymentStatus = "Paid";
+    order.orderStatus = "Pending";
     order.paymentId = paymentId;
-    order.payerId = payerId;
 
     for (let item of order.cartItems) {
       let product = await Product.findById(item.productId);
@@ -143,7 +114,7 @@ const capturePayment = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Some error occured",
+      message: "Some error occurred",
     });
   }
 };
@@ -177,6 +148,8 @@ const getAllOrdersByUserId = async (req, res) => {
 const getOrderDetails = async (req, res) => {
   try {
     const { id } = req.params;
+
+    console.log(req.params);
 
     const order = await Order.findById(id);
 

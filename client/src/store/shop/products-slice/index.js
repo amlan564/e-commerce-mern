@@ -10,14 +10,32 @@ const initialState = {
 export const fetchAllFilteredProducts = createAsyncThunk(
   "/products/fetchAllFilteredProducts",
   async ({ filterParams, sortParams }) => {
-    const query = new URLSearchParams({
-      ...filterParams,
-      sortBy: sortParams,
-    });
+    // const query = new URLSearchParams({
+    //   ...filterParams,
+    //   sortBy: sortParams,
+    // });
+
+    // Format filterParams for the query string
+    const query = new URLSearchParams();
+
+    // Handle category filter
+    if (filterParams.category && filterParams.category.length) {
+      query.append("category", filterParams.category.join(","));
+    }
+
+    // Handle price filter
+    if (filterParams.price && filterParams.price.length === 2) {
+      query.append("price", filterParams.price.join(","));
+    }
+
+    // Add sort parameter
+    query.append("sortBy", sortParams);
 
     const result = await axios.get(
       `${import.meta.env.VITE_API_URL}/api/shop/products/get?${query}`
     );
+
+    console.log(result.data)
 
     return result?.data;
   }

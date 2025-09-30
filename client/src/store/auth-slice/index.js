@@ -71,8 +71,43 @@ export const checkAuth = createAsyncThunk(
       }
     );
 
-    console.log(response.data);
+    return response.data;
+  }
+);
 
+export const updateUserProfile = createAsyncThunk(
+  "/auth/update-profile",
+  async ({ userId, formData }) => {
+    const token = JSON.parse(sessionStorage.getItem("token"));
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/auth/update-profile`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  }
+);
+
+export const updateUserPassword = createAsyncThunk(
+  "/auth/update-password",
+  async ({ userId, formData }) => {
+    const token = JSON.parse(sessionStorage.getItem("token"));
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/auth/update-password`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      }
+    );
+    console.log(response?.data, "from redux password")
     return response.data;
   }
 );
@@ -136,6 +171,26 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.success ? action.payload.user : null;
+        state.isAuthenticated = action.payload.success;
+      })
+      .addCase(updateUserProfile.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(updateUserPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUserPassword.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(updateUserPassword.rejected, (state, action) => {
+        state.isLoading = false;
       });
   },
 });

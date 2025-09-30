@@ -5,7 +5,6 @@ import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
 import AdminLayout from "./components/admin-view/layout";
 import AdminDashboard from "./pages/admin-view/dashboard";
-import AdminFeatures from "./pages/admin-view/features";
 import AdminOrders from "./pages/admin-view/orders";
 import AdminProducts from "./pages/admin-view/products";
 import ShoppingLayout from "./components/shopping-view/layout";
@@ -17,12 +16,12 @@ import ShoppingAccount from "./pages/shopping-view/account";
 import CheckAuth from "./components/common/check-auth";
 import UnauthPage from "./pages/unauth-page";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { checkAuth } from "./store/auth-slice";
-import { Skeleton } from "@/components/ui/skeleton";
-import PaypalReturn from "./pages/shopping-view/paypal-return";
-import PaymentSuccess from "./pages/shopping-view/payment-success";
 import SearchProducts from "./pages/shopping-view/search";
+import Payment from "./pages/shopping-view/payment";
+import OrderPlaced from "./pages/shopping-view/order-placed";
+import FeatureImage from "./pages/admin-view/feature-image";
 
 function App() {
   const { isAuthenticated, user, isLoading } = useSelector(
@@ -34,10 +33,6 @@ function App() {
     const token = JSON.parse(sessionStorage.getItem("token"));
     dispatch(checkAuth(token));
   }, [dispatch]);
-
-  if (isLoading) {
-    return <Skeleton className="h-[20px] w-[100px] rounded-full" />;
-  }
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
@@ -72,7 +67,7 @@ function App() {
           }
         >
           <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="features" element={<AdminFeatures />} />
+          <Route path="feature-image" element={<FeatureImage />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="products" element={<AdminProducts />} />
         </Route>
@@ -86,10 +81,10 @@ function App() {
         >
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
-          <Route path="checkout" element={<ShoppingCheckout />} />
+          <Route path="cart" element={<ShoppingCheckout />} />
           <Route path="account" element={<ShoppingAccount />} />
-          <Route path="paypal-return" element={<PaypalReturn />} />
-          <Route path="payment-success" element={<PaymentSuccess />} />
+          <Route path="payment" element={<Payment />} />
+          <Route path="order-placed" element={<OrderPlaced />} />
           <Route path="search" element={<SearchProducts />} />
         </Route>
         <Route path="*" element={<NotFound />}></Route>

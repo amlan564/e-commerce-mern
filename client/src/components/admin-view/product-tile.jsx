@@ -10,28 +10,28 @@ const AdminProductTile = ({
   handleDelete,
 }) => {
   return (
-    <Card className="w-full max-w-sm border-none p-0">
+    <Card className="w-full max-w-sm mx-auto p-0 pb-4 border-none shadow-sm overflow-hidden cursor-pointer">
       <div>
-        <div className="relative mb-2">
+        <div className="relative mb-2 group">
           <img
             src={product?.image}
             alt={product?.title}
-            className="w-full h-[300px] rounded-t-lg object-cover"
+            className="w-full object-cover rounded-t-lg scale-80"
           />
         </div>
         <CardContent>
-          <h2 className="text-xl font-bold mb-2">{product?.title}</h2>
+          <h2 className="text-base font-medium mb-2">{product?.title}</h2>
           <div className="flex justify-between items-center mb-2">
             <span
               className={`${
-                product?.salePrice > 0 ? "line-through" : ""
-              } text-lg font-semibold`}
+                product?.salePrice > 0 ? "line-through text-red-500" : ""
+              } text-sm font-medium`}
             >
-              ৳{product?.price}
+              Tk {product?.price}
             </span>
             {product?.salePrice > 0 ? (
-              <span className="text-lg font-semibold">
-                ৳{product?.salePrice}
+              <span className="text-sm font-medium">
+                Tk {product?.salePrice}
               </span>
             ) : null}
           </div>

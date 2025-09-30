@@ -59,10 +59,10 @@ export const addProductFormElements = [
     componentType: "select",
     options: [
       { id: "laptop", label: "Laptop" },
+      { id: "monitor", label: "Monitor" },
       { id: "phone", label: "Phone" },
       { id: "camera", label: "Camera" },
-      { id: "sound system", label: "Sound System" },
-      { id: "accessories", label: "Accessories" },
+      { id: "headphone", label: "Headphone" },
     ],
     placeholder: "Select product category",
   },
@@ -106,6 +106,11 @@ export const shoppingViewHeaderMenuItems = [
     path: "/shop/listing",
   },
   {
+    id: "monitor",
+    label: "Monitor",
+    path: "/shop/listing",
+  },
+  {
     id: "phone",
     label: "Phone",
     path: "/shop/listing",
@@ -132,6 +137,10 @@ export const filterOptions = {
     {
       id: "laptop",
       label: "Laptop",
+    },
+    {
+      id: "monitor",
+      label: "Monitor",
     },
     {
       id: "phone",
@@ -184,10 +193,43 @@ export const addressFormControls = [
     type: "text",
     placeholder: "Enter your phone",
   },
+];
+
+export const profileFormControls = [
   {
-    label: "Notes",
-    name: "notes",
-    componentType: "textarea",
-    placeholder: "Enter any additional notes",
+    label: "Name",
+    name: "name",
+    componentType: "text",
+    type: "text",
+  },
+  {
+    label: "Email",
+    name: "email",
+    componentType: "input",
+    type: "email",
+  },
+];
+
+export const updatePasswordFormControls = [
+  {
+    label: "Old Password",
+    name: "oldPassword",
+    componentType: "input",
+    type: "password",
+    placeholder: "Enter Old Password",
+  },
+  {
+    label: "New Password",
+    name: "newPassword",
+    componentType: "input",
+    type: "password",
+    placeholder: "Enter New Password",
+  },
+  {
+    label: "Confirm Password",
+    name: "confirmPassword",
+    componentType: "input",
+    type: "password",
+    placeholder: "Enter Confirm Password",
   },
 ];

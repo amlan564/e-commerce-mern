@@ -2,7 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
-  approvalURL: null,
+  // for paypal
+  // approvalURL: null,
+  // for stripe
+  clientSecret: null,
   isLoading: false,
   orderId: null,
   orderList: [],
@@ -21,12 +24,26 @@ export const createOrder = createAsyncThunk(
   }
 );
 
+// for paypal
+// export const capturePayment = createAsyncThunk(
+//   "/order/capturePayment",
+//   async ({ paymentId, payerId, orderId }) => {
+//     const response = await axios.post(
+//       `${import.meta.env.VITE_API_URL}/api/shop/order/capture`,
+//       { paymentId, payerId, orderId }
+//     );
+
+//     return response?.data;
+//   }
+// );
+
+// for stripe
 export const capturePayment = createAsyncThunk(
   "/order/capturePayment",
-  async ({ paymentId, payerId, orderId }) => {
+  async ({ paymentId, orderId }) => {
     const response = await axios.post(
       `${import.meta.env.VITE_API_URL}/api/shop/order/capture`,
-      { paymentId, payerId, orderId }
+      { paymentId, orderId }
     );
 
     return response?.data;
@@ -70,7 +87,10 @@ const shoppingOrderSlice = createSlice({
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.approvalURL = action.payload.approvalURL;
+        // for paypal
+        // state.approvalURL = action.payload.approvalURL;
+        // for stripe
+        state.clientSecret = action.payload.clientSecret;
         state.orderId = action.payload.orderId;
         sessionStorage.setItem(
           "currentOrderId",
@@ -79,8 +99,24 @@ const shoppingOrderSlice = createSlice({
       })
       .addCase(createOrder.rejected, (state) => {
         state.isLoading = true;
-        state.approvalURL = null;
+        // for paypal
+        // state.approvalURL = null;
+        // for stripe
+        state.clientSecret = null;
         state.orderId = null;
+      })
+      //for stripe
+      .addCase(capturePayment.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(capturePayment.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.orderId = null;
+        state.clientSecret = null;
+        sessionStorage.removeItem("currentOrderId");
+      })
+      .addCase(capturePayment.rejected, (state) => {
+        state.isLoading = true;
       })
       .addCase(getAllOrdersByUserId.pending, (state) => {
         state.isLoading = true;

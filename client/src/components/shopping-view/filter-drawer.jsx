@@ -6,7 +6,7 @@ import { Separator } from "../ui/separator";
 import { Slider } from "../ui/slider";
 import { Button } from "../ui/button";
 
-const ProductFilter = ({ filters, handleFilter }) => {
+const ProductFilterDrawer = ({ filters, handleFilter }) => {
   // Define the price range bounds
   const MIN_PRICE = 0;
   const MAX_PRICE = 200000;
@@ -29,11 +29,10 @@ const ProductFilter = ({ filters, handleFilter }) => {
     setPriceRange([MIN_PRICE, MAX_PRICE]);
     // Clear all filters (category and price)
     handleFilter("reset", {});
-    window.history.replaceState({}, document.title, window.location.pathname);
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 shadow-sm h-[80vh] lg:fixed lg:top-24 lg:w-[250px] z-10 overflow-y-auto hidden lg:block">
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm lg:fixed lg:top-24 lg:w-[250px] z-10 overflow-y-auto">
       <div className="px-4 py-3 flex items-center justify-between">
         <h2 className="text-lg font-bold">Filters</h2>
         <Button
@@ -99,4 +98,4 @@ const ProductFilter = ({ filters, handleFilter }) => {
   );
 };
 
-export default ProductFilter;
+export default ProductFilterDrawer;

@@ -1,7 +1,7 @@
 import { AlignJustify, LogOut } from "lucide-react";
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
-import { logoutUser, resetTokenAndCredentials } from "@/store/auth-slice";
+import { resetTokenAndCredentials } from "@/store/auth-slice";
 import { useNavigate } from "react-router-dom";
 
 const AdminHeader = ({ setOpen }) => {
@@ -15,7 +15,7 @@ const AdminHeader = ({ setOpen }) => {
   };
 
   return (
-    <header className="flex items-center justify-between px-4 py-3 bg-background border-b border-gray-200">
+    <header className="flex items-center justify-between px-6 lg:px-10 py-3 bg-background border-b border-gray-200 fixed top-0 z-40 w-full">
       <Button
         onClick={() => setOpen(true)}
         className="lg:hidden bg-black text-white cursor-pointer"

@@ -51,6 +51,7 @@ const addToCart = async (req, res) => {
     });
   }
 };
+
 const fetchCartItems = async (req, res) => {
   try {
     const { userId } = req.params;

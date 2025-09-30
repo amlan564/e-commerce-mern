@@ -40,9 +40,9 @@ const ShoppingOrders = () => {
   }, [orderDetails]);
 
   return (
-    <Card>
+    <Card className="border border-gray-200 shadow-sm">
       <CardHeader>
-        <CardTitle>Order History</CardTitle>
+        <CardTitle className="font-bold">Order History</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -60,15 +60,15 @@ const ShoppingOrders = () => {
           <TableBody>
             {orderList && orderList.length > 0
               ? orderList.map((orderItem) => (
-                  <TableRow>
+                  <TableRow key={orderItem?._id}>
                     <TableCell>{orderItem?._id}</TableCell>
                     <TableCell>{orderItem?.orderDate.split("T")[0]}</TableCell>
                     <TableCell>
                       <Badge
                         className={`py-1 px-2 ${
-                          orderItem?.orderStatus === "confirmed"
+                          orderItem?.orderStatus === "Delivered"
                             ? "bg-green-500"
-                            : orderItem?.orderStatus === "rejected"
+                            : orderItem?.orderStatus === "Rejected"
                             ? "bg-red-500"
                             : "bg-black"
                         }`}
@@ -76,7 +76,7 @@ const ShoppingOrders = () => {
                         {orderItem?.orderStatus}
                       </Badge>
                     </TableCell>
-                    <TableCell>{orderItem?.totalAmount}</TableCell>
+                    <TableCell>Tk {orderItem?.totalAmount}</TableCell>
                     <TableCell>
                       <Dialog
                         open={openDetailsDialog}

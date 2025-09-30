@@ -19,6 +19,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+import { PlusIcon } from "lucide-react";
 
 const initialFormData = {
   image: null,
@@ -39,6 +40,7 @@ const AdminProducts = () => {
   const [imageFile, setImageFile] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [imageLoadingState, setImageLoadingState] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [currentUpdatedId, setCurrentUpdatedId] = useState(null);
 
   const { productList } = useSelector((state) => state.adminProducts);
@@ -95,20 +97,32 @@ const AdminProducts = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchAllProducts());
+    setLoading(true);
+    dispatch(fetchAllProducts()).then(() => {
+      setLoading(false);
+    });
   }, [dispatch]);
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="w-20 h-20 border-4 border-gray-200 border-t-black rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
-    <>
-      <div className="mb-5 w-full flex justify-end">
+    <div className="lg:ml-[260px] mt-[60px]">
+      <div className="w-full flex justify-end">
         <Button
           onClick={() => setOpenCreateProductsDialog(true)}
-          className="bg-black text-white"
+          className="flex items-center gap-2"
         >
-          Add New Product
+          <PlusIcon />
+          <span>Add New Product</span>
         </Button>
       </div>
-      <div className="grid gap-4 justify-center md:grid-cols-3 lg:grid-cols-4 mt-10">
+      <div className="grid gap-4 justify-center sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 mt-10">
         {productList && productList.length > 0
           ? productList.map((productItem, index) => (
               <AdminProductTile
@@ -160,7 +174,7 @@ const AdminProducts = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 };
 

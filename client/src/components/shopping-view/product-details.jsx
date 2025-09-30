@@ -3,7 +3,6 @@ import { Dialog, DialogContent } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { StarIcon } from "lucide-react";
 import { Input } from "../ui/input";
 import toast from "react-hot-toast";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
@@ -99,34 +98,34 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
 
   return (
     <Dialog open={open} onOpenChange={handleDialogClose}>
-      <DialogContent className="grid max-md:grid-cols-1 max-md:max-h-[600px] grid-cols-2 gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw] bg-white border-none">
+      <DialogContent className="grid max-md:grid-cols-1 max-md:max-h-[600px] max-md:overflow-y-auto grid-cols-2 gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[60vw] bg-white border-none">
         <div className="relative overflow-hidden rounded-lg">
           <img
             src={productDetails?.image}
             alt={productDetails?.title}
-            width={600}
-            height={600}
-            className="aspect-square w-full object-cover"
+            className="w-full scale-70"
           />
         </div>
         <div>
           <div>
-            <h1 className="text-2xl font-extrabold">{productDetails?.title}</h1>
-            <p className="text-muted-foreground mb-5">
+            <h1 className="text-lg font-medium mb-2">
+              {productDetails?.title}
+            </h1>
+            <p className="text-muted-foreground text-sm mb-4 text-justify">
               {productDetails?.description}
             </p>
           </div>
           <div className="flex items-center justify-between">
             <p
-              className={`text-xl font-bold ${
-                productDetails?.salePrice > 0 ? "line-through" : ""
+              className={`text-lg font-medium ${
+                productDetails?.salePrice > 0 ? "line-through text-red-500" : ""
               }`}
             >
-              ৳{productDetails?.price}
+              Tk {productDetails?.price}
             </p>
             {productDetails?.salePrice > 0 ? (
-              <p className="text-xl font-bold text-muted-foreground">
-                ৳{productDetails?.salePrice}
+              <p className="text-lg font-medium">
+                Tk {productDetails?.salePrice}
               </p>
             ) : null}
           </div>
@@ -134,7 +133,9 @@ const ProductDetailsDialog = ({ open, setOpen, productDetails }) => {
             <div className="flex items-center gap-0.5">
               <StarRating rating={averageReview} />
             </div>
-            <span className="text-muted-foreground">({averageReview.toFixed(1)})</span>
+            <span className="text-muted-foreground">
+              ({averageReview.toFixed(1)})
+            </span>
           </div>
           <div className="my-5">
             {productDetails?.totalStock === 0 ? (

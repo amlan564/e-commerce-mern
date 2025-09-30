@@ -1,48 +1,95 @@
-import ProductImageUpload from "@/components/admin-view/image-upload";
-import { Button } from "@/components/ui/button";
+import StatCard from "@/components/admin-view/stat-card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { addFeatureImage, getFeatureImages } from "@/store/common-slice";
+import axios from "axios";
+import { BaggageClaim, FileClock, ListTodo, UserRound } from "lucide-react";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
 
 const AdminDashboard = () => {
-  const [imageFile, setImageFile] = useState(null);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
-  const [imageLoadingState, setImageLoadingState] = useState(false);
-
-  const dispatch = useDispatch();
-  const { featureImageList } = useSelector((state) => state.commonFeature);
-
-  const handleUplaodFeatureImage = () => {
-    dispatch(addFeatureImage(uploadedImageUrl)).then((data) => {
-      if (data?.payload?.success) {
-        dispatch(getFeatureImages());
-        setImageFile(null);
-        setUploadedImageUrl("");
-        toast.success("Image uploaded successfully");
-      }
-    });
-  };
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalOrders: 0,
+    totalProducts: 0,
+    totalPendingOrders: 0,
+    topSellingProducts: [],
+  });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(getFeatureImages());
-  }, [dispatch]);
+    const fetchDashboardData = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/admin/dashboard/get`
+        );
+        setStats(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="w-20 h-20 border-4 border-gray-200 border-t-black rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <ProductImageUpload
-        imageFile={imageFile}
-        setImageFile={setImageFile}
-        uploadedImageUrl={uploadedImageUrl}
-        setUploadedImageUrl={setUploadedImageUrl}
-        setImageLoadingState={setImageLoadingState}
-        imageLoadingState={imageLoadingState}
-        isCustomStyling={true}
-        // isEditMode={currentUpdatedId !== null}
-      />
-      <Button onClick={handleUplaodFeatureImage} className="mt-5 w-full">
-        Upload
-      </Button>
+    <div className="lg:ml-[260px] mt-[60px]">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mb-10">
+        <StatCard
+          title={"Total Users"}
+          value={stats.totalUsers}
+          icon={<UserRound />}
+        />
+        <StatCard
+          title={"Total Products"}
+          value={stats.totalProducts}
+          icon={<ListTodo />}
+        />
+        <StatCard
+          title={"Total Orders"}
+          value={stats.totalOrders}
+          icon={<BaggageClaim />}
+        />
+        <StatCard
+          title={"Total Pending Orders"}
+          value={stats.totalPendingOrders}
+          icon={<FileClock />}
+        />
+      </div>
+      <div className="mb-10">
+        <h3 className="font-bold text-lg mb-6">Top Selling Products</h3>
+        {stats.topSellingProducts.length > 0 ? (
+          <ul className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 ">
+            {stats.topSellingProducts.map((product, index) => (
+              <Card
+                key={index}
+                className="border border-gray-200 shadow-sm cursor-pointer px-6"
+              >
+                <div>
+                  <img
+                    src={product.productImage}
+                    alt={product.productName}
+                    className="w-full object-cover"
+                  />
+                </div>
+                <div className="product-details">
+                  <CardTitle>{product.productName}</CardTitle>
+                  <p className="text-sm mt-2">{product.totalQuantity} units</p>
+                </div>
+              </Card>
+            ))}
+          </ul>
+        ) : (
+          <p>No top-selling products available</p>
+        )}
+      </div>
     </div>
   );
 };

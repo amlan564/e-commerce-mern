@@ -44,6 +44,8 @@ const CommonForm = ({
                 [getControlItem.name]: e.target.value,
               })
             }
+            readOnly={getControlItem.readOnly}
+            disabled={getControlItem.readOnly}
           />
         );
 

@@ -1,23 +1,58 @@
 import Address from "@/components/shopping-view/address";
 import ShoppingOrders from "@/components/shopping-view/orders";
+import Profile from "@/components/shopping-view/profile";
+import UserCard from "@/components/shopping-view/user-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { checkAuth } from "@/store/auth-slice";
+// import { useEffect } from "react";
+// import { useDispatch, useSelector } from "react-redux";
 
 const ShoppingAccount = () => {
+  // const { user, isAuthenticated, isLoading } = useSelector(
+  //   (state) => state.auth
+  // );
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   const token = sessionStorage.getItem("token");
+  //   if (token && !isAuthenticated && !isLoading) {
+  //     dispatch(checkAuth(JSON.parse(token)));
+  //   }
+  // }, [dispatch, isAuthenticated, isLoading]);
+
   return (
-    <div className="flex flex-col lg:mx-30">
-      <div className="container mx-auto grid grid-cols-1 gap-8 py-8">
-        <div className="flex flex-col rounded-lg bg-background p-6 shadow-md">
-          <Tabs defaultValue="orders">
-            <TabsList>
-              <TabsTrigger value="orders">Orders</TabsTrigger>
-              <TabsTrigger value="address">Address</TabsTrigger>
-            </TabsList>
-            <TabsContent value="orders">
-              <ShoppingOrders />
-            </TabsContent>
-            <TabsContent value="address">
-              <Address />
-            </TabsContent>
+    <div className="flex flex-col mx-6 xl:mx-30">
+      <div className="py-10">
+        <div className="flex flex-col">
+          <Tabs
+            defaultValue="orders"
+            className="grid grid-cols-1 lg:grid-cols-[1fr_3fr] gap-4"
+          >
+            <div className="">
+              <UserCard />
+              <TabsList className="mt-4 flex lg:flex-col w-1/2 md:w-1/3 lg:w-full bg-white h-auto shadow-sm border border-gray-200">
+                <TabsTrigger value="orders" className="cursor-pointer w-full">
+                  Orders
+                </TabsTrigger>
+                <TabsTrigger value="address" className="cursor-pointer w-full">
+                  Address
+                </TabsTrigger>
+                <TabsTrigger value="profile" className="cursor-pointer w-full">
+                  Profile
+                </TabsTrigger>
+              </TabsList>
+            </div>
+            <div>
+              <TabsContent value="orders">
+                <ShoppingOrders />
+              </TabsContent>
+              <TabsContent value="address">
+                <Address />
+              </TabsContent>
+              <TabsContent value="profile">
+                <Profile />
+              </TabsContent>
+            </div>
           </Tabs>
         </div>
       </div>

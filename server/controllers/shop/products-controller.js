@@ -2,7 +2,11 @@ const Product = require("../../models/Product");
 
 const getFilteredProducts = async (req, res) => {
   try {
-    const { category = [], sortBy = "price-lowtohigh" } = req.query;
+    const {
+      category = [],
+      price = [],
+      sortBy = "price-lowtohigh",
+    } = req.query;
 
     let filters = {};
 
@@ -13,6 +17,16 @@ const getFilteredProducts = async (req, res) => {
 
       filters.category = { $in: normalizedCategory };
     }
+
+    // Handle price range filter
+    if (price.length) {
+      const [minPrice, maxPrice] = price.split(",").map(Number);
+      if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+        filters.price = { $gte: minPrice, $lte: maxPrice };
+      }
+    }
+
+    console.log(price)
 
     let sort = {};
 

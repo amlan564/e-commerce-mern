@@ -17,7 +17,6 @@ const initialAddressFormData = {
   city: "",
   phone: "",
   pincode: "",
-  notes: "",
 };
 
 const Address = ({ setCurrentSelectedAddress, selectedId }) => {
@@ -73,7 +72,6 @@ const Address = ({ setCurrentSelectedAddress, selectedId }) => {
       city: getCurrentAddress?.city,
       phone: getCurrentAddress?.phone,
       pincode: getCurrentAddress?.pincode,
-      notes: getCurrentAddress?.notes,
     });
   };
 
@@ -99,14 +97,15 @@ const Address = ({ setCurrentSelectedAddress, selectedId }) => {
   }, [dispatch]);
 
   return (
-    <Card className="border-none shadow-md">
+    <Card className="border border-gray-200 shadow-sm">
       <CardHeader>
-        <CardTitle>Address Lists</CardTitle>
+        <CardTitle className="font-bold">Address Lists</CardTitle>
       </CardHeader>
-      <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <div className="mb-5 px-6 py-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
         {addressList && addressList.length > 0
-          ? addressList.map((singleAddressItem) => (
+          ? addressList.map((singleAddressItem, index) => (
               <AddressCard
+                key={index}
                 selectedId={selectedId}
                 handleDeleteAddress={handleDeleteAddress}
                 addressInfo={singleAddressItem}
@@ -117,7 +116,7 @@ const Address = ({ setCurrentSelectedAddress, selectedId }) => {
           : null}
       </div>
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="font-bold">
           {currentUpdatedId !== null ? "Update Address" : "Add New Address"}
         </CardTitle>
       </CardHeader>

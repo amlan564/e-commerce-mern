@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { logoutUser, resetTokenAndCredentials } from "@/store/auth-slice";
+import { resetTokenAndCredentials } from "@/store/auth-slice";
 import UserCartWrapper from "./cart-wrapper";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice";
@@ -51,12 +51,12 @@ const MenuItems = () => {
   };
 
   return (
-    <nav className="flex flex-col lg:flex-row lg:items-center mb-3 lg:mb-0 px-6 py-14 lg:px-0 lg:py-0 gap-8">
+    <nav className="flex flex-col lg:flex-row lg:items-center mb-3 lg:mb-0 px-8 pt-14 pb-4 lg:px-0 lg:py-0 gap-8">
       {shoppingViewHeaderMenuItems.map((menuItem) => (
         <Label
           onClick={() => handleNavigate(menuItem)}
           key={menuItem.id}
-          className="font-medium cursor-pointer"
+          className="font-medium cursor-pointer relative hover:text-gray-900 transition-colors duration-300 nav-label"
         >
           {menuItem.label}
         </Label>
@@ -83,7 +83,7 @@ const HeaderRightContent = () => {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col lg:items-center lg:flex-row gap-6 lg:gap-4 px-4 lg:px-0">
+    <div className="flex flex-col lg:items-center lg:flex-row gap-6 lg:gap-4 px-8 lg:px-0">
       <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
         <Button
           onClick={() => setOpenCartSheet(true)}
@@ -106,24 +106,34 @@ const HeaderRightContent = () => {
           }
         />
       </Sheet>
-
       <DropdownMenu>
         <DropdownMenuTrigger className="cursor-pointer" asChild>
-          <Avatar className="bg-black">
-            <AvatarFallback className="bg-black text-white font-extrabold">
-              {user?.userName[0].toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+          {user?.profileImage ? (
+            <img
+              src={user?.profileImage}
+              alt=""
+              className="w-8 h-8 rounded-full object-cover border-2"
+            />
+          ) : (
+            <Avatar className="bg-black">
+              <AvatarFallback className="bg-black text-white font-extrabold">
+                {user?.userName[0].toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          )}
         </DropdownMenuTrigger>
         <DropdownMenuContent side="right" className="w-56 bg-white border-none">
           <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => navigate("/shop/account")}>
+          <DropdownMenuItem
+            onClick={() => navigate("/shop/account")}
+            className="cursor-pointer"
+          >
             <User className="w-4 h-4" />
-            Account
+            My Account
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleLogout}>
+          <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
             <LogOut className="w-4 h-4" />
             Logout
           </DropdownMenuItem>
@@ -134,11 +144,9 @@ const HeaderRightContent = () => {
 };
 
 const ShoppingHeader = () => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
-
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-gray-200">
-      <div className="flex h-16 items-center justify-between px-4 md:px-6">
+    <header className="w-full bg-white relative">
+      <div className="flex h-16 items-center justify-between px-6 xl:px-30 fixed top-0 z-50 w-full bg-white border-b border-gray-200">
         <Link to="/shop/home" className="flex items-center gap-2">
           <HousePlug className="w-6 h-6" />
           <span className="font-bold">UltraGadgets</span>

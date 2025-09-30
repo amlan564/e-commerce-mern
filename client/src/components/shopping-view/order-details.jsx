@@ -1,53 +1,51 @@
 import React from "react";
 import { DialogContent } from "../ui/dialog";
-import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
 import { useSelector } from "react-redux";
 
 const ShoppingOrderDetailsView = ({ orderDetails }) => {
   const { user } = useSelector((state) => state.auth);
-  console.log(orderDetails, "amlan details");
 
   return (
-    <DialogContent className="sm:max-w-[600px]">
+    <DialogContent className="sm:max-w-[500px] md:max-w-[600px] h-[90vh] overflow-y-auto">
       <div className="grid gap-6">
-        <div className="grid gap-2">
+        <div className="grid gap-1">
           <div className="flex items-center justify-between mt-6">
             <p className="font-medium">Order ID</p>
-            <Label>{orderDetails?._id}</Label>
+            <p className="text-sm">{orderDetails?._id}</p>
           </div>
           <div className="flex items-center justify-between mt-2">
             <p className="font-medium">Order Date</p>
-            <Label>{orderDetails?.orderDate.split("T")[0]}</Label>
+            <p className="text-sm">{orderDetails?.orderDate.split("T")[0]}</p>
           </div>
           <div className="flex items-center justify-between mt-2">
             <p className="font-medium">Order Price</p>
-            <Label>{orderDetails?.totalAmount}</Label>
+            <p className="text-sm">{orderDetails?.totalAmount}</p>
           </div>
           <div className="flex items-center justify-between mt-2">
             <p className="font-medium">Payment Method</p>
-            <Label>{orderDetails?.paymentMethod}</Label>
+            <p className="text-sm">{orderDetails?.paymentMethod}</p>
           </div>
           <div className="flex items-center justify-between mt-2">
             <p className="font-medium">Payment Status</p>
-            <Label>{orderDetails?.paymentStatus}</Label>
+            <p className="text-sm">{orderDetails?.paymentStatus}</p>
           </div>
           <div className="flex items-center justify-between mt-2">
             <p className="font-medium">Order Status</p>
-            <Label>
+            <p>
               <Badge
                 className={`py-1 px-2 ${
-                  orderDetails?.orderStatus === "confirmed"
+                  orderDetails?.orderStatus === "Delivered"
                     ? "bg-green-500"
-                    : orderDetails?.orderStatus === "rejected"
+                    : orderDetails?.orderStatus === "Rejected"
                     ? "bg-red-500"
                     : "bg-black"
                 }`}
               >
                 {orderDetails?.orderStatus}
               </Badge>
-            </Label>
+            </p>
           </div>
         </div>
         <Separator />
@@ -57,10 +55,19 @@ const ShoppingOrderDetailsView = ({ orderDetails }) => {
             <ul className="grid gap-3">
               {orderDetails?.cartItems && orderDetails?.cartItems.length > 0
                 ? orderDetails?.cartItems.map((item) => (
-                    <li className="flex items-center justify-between">
-                      <span>Name: {item.title}</span>
-                      <span>Quantity: {item.quantity}</span>
-                      <span>Price: ${item.price}</span>
+                    <li className="grid grid-cols-[2fr_1fr_auto]">
+                      <p>
+                        <span className="font-medium">Name: </span>
+                        {item.title}
+                      </p>
+                      <p>
+                        <span className="font-medium">Quantity: </span>
+                        {item.quantity}
+                      </p>
+                      <p>
+                        <span className="font-medium">Price: </span>
+                        {item.price}
+                      </p>
                     </li>
                   ))
                 : null}
@@ -70,13 +77,27 @@ const ShoppingOrderDetailsView = ({ orderDetails }) => {
         <div className="grid gap-4">
           <div className="grid gap-2">
             <div className="font-medium">Shipping Info</div>
-            <div className="grid gap-0.5 text-muted-foreground">
-              <span>{user.userName}</span>
-              <span>{orderDetails?.addressInfo?.address}</span>
-              <span>{orderDetails?.addressInfo?.city}</span>
-              <span>{orderDetails?.addressInfo?.pincode}</span>
-              <span>{orderDetails?.addressInfo?.phone}</span>
-              <span>{orderDetails?.addressInfo?.notes}</span>
+            <div className="grid gap-1">
+              <p>
+                <span className="font-medium">Name: </span>
+                {user?.userName}
+              </p>
+              <p>
+                <span className="font-medium">Address: </span>
+                {orderDetails?.addressInfo?.address}
+              </p>
+              <p>
+                <span className="font-medium">City: </span>
+                {orderDetails?.addressInfo?.city}
+              </p>
+              <p>
+                <span className="font-medium">Pincode: </span>
+                {orderDetails?.addressInfo?.pincode}
+              </p>
+              <p>
+                <span className="font-medium">Phone: </span>
+                {orderDetails?.addressInfo?.phone}
+              </p>
             </div>
           </div>
         </div>

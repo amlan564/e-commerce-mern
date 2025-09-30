@@ -34,3 +34,26 @@
   --color-sidebar-border: oklch(0.922 0 0);
   --color-sidebar-ring: oklch(0.708 0 0);
 }
+
+/* custom css */
+@media screen and (min-width: 1024px) {
+  .nav-label {
+    position: relative;
+  }
+  .nav-label::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    right: 0;
+    width: 0;
+    height: 3px;
+    background-color: black;
+    transition: width 0.5s ease-in-out;
+    transform-origin: right;
+  }
+  .nav-label:hover::after {
+    width: 100%;
+    left: 0;
+    right: auto;
+  }
+}
