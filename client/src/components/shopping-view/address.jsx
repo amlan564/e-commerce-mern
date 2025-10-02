@@ -101,7 +101,7 @@ const Address = ({ setCurrentSelectedAddress, selectedId }) => {
       <CardHeader>
         <CardTitle className="font-bold">Address Lists</CardTitle>
       </CardHeader>
-      <div className="mb-5 px-6 py-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+      <div className="mb-5 px-6 py-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
         {addressList && addressList.length > 0
           ? addressList.map((singleAddressItem, index) => (
               <AddressCard

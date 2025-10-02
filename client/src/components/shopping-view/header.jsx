@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice";
 import { Label } from "../ui/label";
 
-const MenuItems = () => {
+const MenuItems = ({ onClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -48,6 +48,10 @@ const MenuItems = () => {
           new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
         )
       : navigate(getCurrentMenuItem.path);
+
+    if (onClose) {
+      onClose();
+    }
   };
 
   return (
@@ -65,7 +69,7 @@ const MenuItems = () => {
   );
 };
 
-const HeaderRightContent = () => {
+const HeaderRightContent = ({ onMenuClose }) => {
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
   const [openCartSheet, setOpenCartSheet] = useState(false);
@@ -76,6 +80,7 @@ const HeaderRightContent = () => {
     dispatch(resetTokenAndCredentials());
     sessionStorage.clear();
     navigate("/auth/login");
+    onMenuClose?.();
   };
 
   useEffect(() => {
@@ -86,7 +91,10 @@ const HeaderRightContent = () => {
     <div className="flex flex-col lg:items-center lg:flex-row gap-6 lg:gap-4 px-8 lg:px-0">
       <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
         <Button
-          onClick={() => setOpenCartSheet(true)}
+          onClick={() => {
+            setOpenCartSheet(true);
+            // onMenuClose?.();
+          }}
           variant="outline"
           size="icon"
           className="relative"
@@ -126,7 +134,10 @@ const HeaderRightContent = () => {
           <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            onClick={() => navigate("/shop/account")}
+            onClick={() => {
+              navigate("/shop/account");
+              // onMenuClose?.();
+            }}
             className="cursor-pointer"
           >
             <User className="w-4 h-4" />
@@ -144,6 +155,10 @@ const HeaderRightContent = () => {
 };
 
 const ShoppingHeader = () => {
+  const [openMenuSheet, setOpenMenuSheet] = useState(false);
+
+  const closeMenuSheet = () => setOpenMenuSheet(false);
+
   return (
     <header className="w-full bg-white relative">
       <div className="flex h-16 items-center justify-between px-6 xl:px-30 fixed top-0 z-50 w-full bg-white border-b border-gray-200">
@@ -151,19 +166,24 @@ const ShoppingHeader = () => {
           <HousePlug className="w-6 h-6" />
           <span className="font-bold">UltraGadgets</span>
         </Link>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button size="icon" className="lg:hidden">
-              <Menu className="w-6 h-6" />
-              <span className="sr-only">Toggle header menu</span>
-            </Button>
-          </SheetTrigger>
+        <Sheet
+          open={openMenuSheet}
+          onOpenChange={setOpenMenuSheet}
+        >
+          <Button
+            onClick={() => setOpenMenuSheet(true)}
+            size="icon"
+            className="lg:hidden"
+          >
+            <Menu className="w-6 h-6" />
+            <span className="sr-only">Toggle header menu</span>
+          </Button>
           <SheetContent
             side="left"
             className="w-full max-w-xs bg-white border-none"
           >
-            <MenuItems />
-            <HeaderRightContent />
+            <MenuItems onClose={closeMenuSheet} />
+            <HeaderRightContent onMenuClose={closeMenuSheet} />
           </SheetContent>
         </Sheet>
         <div className="hidden lg:block">

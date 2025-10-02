@@ -167,9 +167,9 @@ const ShoppingListing = () => {
       {/* all products section */}
       <div className="w-full lg:pl-[270px] mt-2">
         <div className="p-3 flex items-center justify-between bg-white shadow-sm rounded-lg border border-gray-200">
-          <h2 className="text-lg font-bold ml-2">All Products</h2>
+          <h2 className="md:text-lg font-bold ml-2">All Products</h2>
           <div className="flex items-center gap-6">
-            <span className="text-gray-600">
+            <span className="text-gray-600 max-sm:hidden">
               {productList?.length === 0
                 ? "No Products"
                 : `${productList?.length} ${
@@ -220,7 +220,7 @@ const ShoppingListing = () => {
           </div>
         </div>
         {/* All products list */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 pt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4 pt-4">
           {productList && productList.length > 0
             ? productList.map((productItem, index) => (
                 <ShoppingProductTile

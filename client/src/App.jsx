@@ -24,7 +24,7 @@ import OrderPlaced from "./pages/shopping-view/order-placed";
 import FeatureImage from "./pages/admin-view/feature-image";
 
 function App() {
-  const { isAuthenticated, user, isLoading } = useSelector(
+  const { isAuthenticated, user } = useSelector(
     (state) => state.auth
   );
   const dispatch = useDispatch();

@@ -55,7 +55,7 @@ const ShoppingOrderDetailsView = ({ orderDetails }) => {
             <ul className="grid gap-3">
               {orderDetails?.cartItems && orderDetails?.cartItems.length > 0
                 ? orderDetails?.cartItems.map((item) => (
-                    <li className="grid grid-cols-[2fr_1fr_auto]">
+                    <li className="grid grid-cols-[2fr_1fr_auto] max-sm:grid-cols-1 max-sm:gap-2">
                       <p>
                         <span className="font-medium">Name: </span>
                         {item.title}

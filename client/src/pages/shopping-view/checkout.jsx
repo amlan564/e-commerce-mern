@@ -155,7 +155,7 @@ const ShoppingCheckout = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[3fr_2fr] gap-5 px-30 py-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[3fr_2fr] gap-5 px-6 xl:px-30 py-8">
         <Address
           selectedId={currentSelectedAddress}
           setCurrentSelectedAddress={setCurrentSelectedAddress}
@@ -177,31 +177,13 @@ const ShoppingCheckout = () => {
             </div>
           </div>
 
-          {/* {clientSecret && orderId ? (
-            <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <CheckoutForm
-                orderId={orderId}
-                clientSecret={clientSecret}
-                setIsPaymentStart={setIsPaymentStart}
-                dispatch={dispatch}
-              />
-            </Elements>
-          ) : (
-            <Button
-              onClick={handleInitiateStripePayment}
-              className="w-full mt-4"
-              disabled={isPaymentStart}
-            >
-              {isPaymentStart ? "Processing Payment" : "Checkout with Stripe"}
-            </Button>
-          )} */}
-
           <Button onClick={() => navigate("/shop/listing")} className="mt-2">
             Continue Shopping
           </Button>
 
           <Button
             onClick={handleInitiateStripePayment}
+            disabled={cartItems.items.length === 0}
             className="w-full bg-green-500 hover:bg-green-600 transition-all"
           >
             Proceed To Payment

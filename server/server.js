@@ -35,14 +35,12 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      console.log("Request Origin:", origin);
-
       // Allow requests with no origin (e.g., non-browser clients like Postman)
       if (!origin) return callback(null, true);
 
       // Check if the origin is allowed
       if (allowedOrigins.includes(origin)) {
-        callback(null, origin); // Return the specific origin
+        callback(null, origin);
       } else {
         callback(new Error("CORS policy: Origin not allowed"));
       }
@@ -58,7 +56,6 @@ app.use(
     credentials: true, // Required for cookies/auth headers
   })
 );
-
 
 // app.use(cors());
 app.use(cookieParser());

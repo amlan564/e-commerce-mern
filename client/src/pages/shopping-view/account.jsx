@@ -30,7 +30,7 @@ const ShoppingAccount = () => {
           >
             <div className="">
               <UserCard />
-              <TabsList className="mt-4 flex lg:flex-col w-1/2 md:w-1/3 lg:w-full bg-white h-auto shadow-sm border border-gray-200">
+              <TabsList className="mt-4 flex lg:flex-col w-2/3 md:w-1/3 lg:w-full bg-white h-auto shadow-sm border border-gray-200">
                 <TabsTrigger value="orders" className="cursor-pointer w-full">
                   Orders
                 </TabsTrigger>
