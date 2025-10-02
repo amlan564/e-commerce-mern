@@ -150,26 +150,15 @@ const ShoppingListing = () => {
 
   useEffect(() => {
     if (filters !== null && sort !== null) {
-      // setLoading(true);
       dispatch(
         fetchAllFilteredProducts({ filterParams: filters, sortParams: sort })
-      ).then(() => {
-        setLoading(false);
-      });
+      );
     }
   }, [dispatch, sort, filters]);
 
   useEffect(() => {
     if (productDetails !== null) setOpenDetailsDialog(true);
   }, [productDetails]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-[80vh]">
-        <div className="w-20 h-20 border-4 border-gray-200 border-t-black rounded-full animate-spin"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="px-6 xl:px-30 py-6">
