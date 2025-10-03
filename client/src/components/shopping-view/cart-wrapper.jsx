@@ -22,7 +22,7 @@ const UserCartWrapper = ({ setOpenCartSheet, cartItems }) => {
       : 0;
 
   return (
-    <SheetContent className="sm:max-w-md h-screen flex flex-col justify-between">
+    <SheetContent className="sm:max-w-md h-screen overflow-y-auto flex flex-col justify-between border-none">
       <SheetHeader>
         <SheetTitle>Your Cart</SheetTitle>
       </SheetHeader>
