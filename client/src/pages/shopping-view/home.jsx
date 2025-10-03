@@ -101,7 +101,7 @@ const ShoppingHome = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % featureImageList.length);
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(timer);
   }, [featureImageList]);
@@ -130,7 +130,7 @@ const ShoppingHome = () => {
                 src={slide?.image}
                 className={`${
                   index === currentSlide ? "opacity-100" : "opacity-0"
-                } absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
+                } absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-2000`}
               />
             ))
           : null}
@@ -176,7 +176,7 @@ const ShoppingHome = () => {
                 }
                 className="cursor-pointer border-none hover:shadow-lg transition-shadow"
               >
-                <CardContent className="flex flex-col items-center justify-center p-6">
+                <CardContent className="flex flex-col items-center justify-center p-6 max-sm:p-2">
                   <categoryItem.icon className="w-12 h-12 mb-4 text-primary" />
                   <span className="font-bold">{categoryItem.label}</span>
                 </CardContent>

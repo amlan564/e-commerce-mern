@@ -220,7 +220,7 @@ const ShoppingListing = () => {
           </div>
         </div>
         {/* All products list */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4 pt-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 pt-4">
           {productList && productList.length > 0
             ? productList.map((productItem, index) => (
                 <ShoppingProductTile

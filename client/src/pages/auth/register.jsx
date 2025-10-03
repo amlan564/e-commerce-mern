@@ -30,8 +30,8 @@ const AuthRegister = () => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-lg space-y-8 px-14 py-10 text-center bg-primary-foreground shadow-sm rounded-lg">
-      <h1 className="text-3xl font-bold tracking-tight text-foreground">
+    <div className="mx-auto w-full max-w-lg space-y-8 px-14 py-10 max-sm:px-8 max-sm:mx-6 text-center bg-primary-foreground shadow-sm rounded-lg">
+      <h1 className="text-3xl max-sm:text-2xl font-bold tracking-tight text-foreground">
         Create an account
       </h1>
       <CommonForm

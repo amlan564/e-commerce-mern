@@ -72,19 +72,19 @@ const UserCartItemsContent = ({ cartItem }) => {
       <img
         src={cartItem?.image}
         alt={cartItem?.title}
-        className="w-18 h-18 object-cover scale-90 mr-2"
+        className="w-18 h-18 max-sm:w-14 max-sm:h-14 object-cover scale-90 mr-2"
       />
       <div className="flex-1 mr-2">
-        <h3 className="font-bold text-sm">{cartItem?.title}</h3>
+        <h3 className="font-bold text-sm max-sm:text-xs">{cartItem?.title}</h3>
         <div className="flex items-center gap-2 mt-1">
           <Button
             onClick={() => handleUpdateQuantity(cartItem, "minus")}
             variant="outline"
             size="icon"
             disabled={cartItem?.quantity === 1}
-            className="w-8 h-8 rounded-full"
+            className="w-8 h-8 max-sm:w-6 max-sm:h-6 rounded-full"
           >
-            <Minus className="w-4 h-4" />
+            <Minus className="w-4 h-4 max-sm:w-3 max-sm:h-3" />
             <span className="sr-only">Decrease</span>
           </Button>
           <span>{cartItem?.quantity}</span>
@@ -92,15 +92,15 @@ const UserCartItemsContent = ({ cartItem }) => {
             onClick={() => handleUpdateQuantity(cartItem, "plus")}
             variant="outline"
             size="icon"
-            className="w-8 h-8 rounded-full"
+            className="w-8 h-8 max-sm:w-6 max-sm:h-6 rounded-full"
           >
-            <Plus className="w-4 h-4" />
-            <span className="sr-only">Decrease</span>
+            <Plus className="w-4 h-4 max-sm:w-3 max-sm:h-3" />
+            <span className="sr-only">Increase</span>
           </Button>
         </div>
       </div>
       <div className="flex flex-col items-end gap-1">
-        <p className="font-semibold text-sm">
+        <p className="font-semibold text-sm max-sm:text-xs">
           Tk{" "}
           {(cartItem?.salePrice > 0 ? cartItem?.salePrice : cartItem?.price) *
             cartItem?.quantity}
